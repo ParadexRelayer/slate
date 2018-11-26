@@ -879,7 +879,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
-<p>Get an order by its ID</p>
+<p>Get an order by its ID. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-10'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/v2/get_order</code> </p>
 <h3 id='query-parameters-10'>Query Parameters</h3>
@@ -940,7 +940,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
-<p>List all of the trades associated with a given order</p>
+<p>List all of the trades associated with a given order. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-11'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/v2/get_order</code> </p>
 <h3 id='query-parameters-11'>Query Parameters</h3>
@@ -1433,6 +1433,11 @@ All feeds time out after 24 hours. If you need to keep the connection open longe
 </tbody></table>
 <h1 id='errors'>Errors</h1>
 <p>The Paradex API uses the following error codes. Codes will be returned with an error message useful for debugging.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span><span class="s1">'error'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'code'</span><span class="p">:</span> <span class="nx">somecode</span><span class="p">,</span> <span class="s1">'reason'</span><span class="p">:</span> <span class="s1">'somereason'</span><span class="p">}}</span>
+</code></pre>
+<p>The Paradex API will always return either a success or a message with the key <code>error</code>. Each error will be a object with a <code>code</code> and <code>reason</code>. For most errors there will be only one error contained in the message. If the error code is <code>VALIDATION</code> then there will be an extra key, <code>validation_errors</code>, that points to an array of objects containing multiple valdiation errors.</p>
+
+<p>The following is a table of error codes and their meaning:</p>
 
 <table><thead>
 <tr>

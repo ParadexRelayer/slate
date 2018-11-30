@@ -341,25 +341,25 @@
       <div class="content">
         <!-- Content from includes goes here -->
 <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Paradex API! The Paradex API is a powerful toolset used to interact with Paradex over http or websocket. </p>
+<p>Welcome to the Paradex API! The Paradex API is a powerful toolset used to interact with Paradex over HTTP or websocket. </p>
 
-<p>It allows you to submit trades, view orders, view the orderbook for different markets and more. It&#39;s an ideal tool for automatically trading tokens directly from your wallet, making it easy for both beginners and experts to get started trading tokens.</p>
+<p>It allows you to submit trades, view orders, view the orderbook for different markets and more. It&#39;s an ideal tool for automatically trading tokens directly from your wallet, making it easy for both beginners and experts alike to get started algorithmically trading tokens.</p>
 <h1 id='authentication'>Authentication</h1>
-<p>The Paradex API has four levels of authentication, public access, basic access, account access, and private key access. Most of the time you will be working with basic access and account access as these protect most of the endpoints. </p>
+<p>The Paradex API has four levels of authentication: public access, basic access, account access, and private key access. Most of the time you will be working with basic and account access as these protect most of the endpoints. Private key access is used only to generate secrets (more below) and public access is only applied to the ticker endpoint to be used as a public feed.</p>
 <h3 id='basic-access'>Basic Access</h3><pre class="highlight shell tab-shell"><code><span class="c"># Make a request with your api key</span>
-curl <span class="s2">"http://api.paradex.io/v2/nonce"</span>
+curl <span class="s2">"http://api.paradex.io/v1/nonce"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre>
-<p>Basic access is used to any non-account endpoint. To query these endpoints you must include the <code>HTTP_API_KEY</code> header on your request that includes an API key generated for your account. Information about generating API keys can be found our our <a href="https://paradex.io/developers">API key page</a>. </p>
+<p>Basic access is used to protect any non-account endpoint. To query these endpoints you must include the <code>HTTP_API_KEY</code> header on your request that includes an API key generated for your account. Information about generating API keys can be found on our <a href="https://paradex.io/developers">API key page</a>. </p>
 <h3 id='account-access'>Account Access</h3><pre class="highlight shell tab-shell"><code><span class="c"># First get a secret from the get_secret endpoint</span>
-curl <span class="s2">"http://api.paradex.io/v2/get_secret"</span>
+curl <span class="s2">"http://api.paradex.io/v1/get_secret"</span>
  --data <span class="s2">"nonce=&lt;valid-nonce&gt;"</span>
  -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
  -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre>
-<p>Account access is required for any action that changes or queries the state of your account. We do this to add an extra layer of security to keep your data and trades safe. In order to access endpoints protected by basic access you must first request a secret from the generate secret endpoint. This secret is used to sign any data sent to the Paradex API to verify you are the sender. </p>
+<p>Account access is required for any action that changes or queries the state of your account. We do this to add an extra layer of security to keep your data and trades safe. In order to access endpoints protected by account access you must first request a secret from the generate secret endpoint. This secret is used to sign any data sent to the Paradex API to verify you are the sender. </p>
 <pre class="highlight shell tab-shell"><code><span class="c"># Make a request using the secret retreived from the get secret endpoint</span>
-curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"</span>
+curl <span class="s2">"http://api.paradex.io/v1/&lt;account-access-endpoint&gt;"</span>
  --data <span class="s2">"nonce=&lt;valid-nonce&gt;"</span>
  -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
  -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature-with-secret&gt;"</span>
@@ -408,7 +408,7 @@ curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"
 </pre>
 <h1 id='websocket-api'>Websocket API</h1><pre class="highlight javascript tab-javascript"><code><span class="c1">// Example WS Request</span>
 <span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'endpoint'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -421,7 +421,7 @@ curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"
 <span class="c1">// Example WS Response</span>
 <span class="p">{</span>
     <span class="s1">'message_id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span><span class="p">,</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span><span class="p">,</span>
     <span class="s1">'status_code'</span><span class="p">:</span> <span class="s1">'200'</span><span class="p">,</span>
     <span class="s1">'content'</span><span class="p">:</span> <span class="p">{</span><span class="c1">//Same as HTTP},</span>
 <span class="p">}</span>
@@ -434,13 +434,13 @@ curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"
 
 <p>Security for the websocket API has the same levels as the regular HTTP API, the only difference is how authentication requests are sent. All basic access endpoints still require an API key, except on the websocket API the API key needs to be included in the payload under the name <code>api_key</code>. </p>
 
-<p>Account access request are also similar to the http version. The only difference is that instead of putting the signature in the header, we add the payload signature to the request under the name <code>sig</code>. When packing and signing, only pack and sign the params, not any of the other data associated with the message.</p>
+<p>Account access request are also similar to the HTTP version. The only difference is that instead of putting the signature in the header, we add the payload signature to the request under the name <code>sig</code>. When packing and signing, only pack and sign the params and don&#39;t include any of the other data packed message.</p>
 
-<p>Throughout the rest of the documentation we will also be referencing examples for how to make websocket requests to each endpoint. </p>
-<h1 id='pagination'>Pagination</h1><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/orderbook?market=rep-weth&amp;cursor=2018-03-09T02:50:27Z&amp;per_page=75"</span>
+<p>Throughout the rest of the documentation we will be referencing examples for how to make websocket requests to each endpoint. </p>
+<h1 id='pagination'>Pagination</h1><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/orderbook?market=rep-weth&amp;cursor=2018-03-09T02:50:27Z&amp;per_page=75"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'orderbook'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -458,11 +458,11 @@ curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"
 
 <p>Each time a request is made to a pagination endpoint, an optional <code>per_page</code> and <code>cursor</code> can be included. This specifies how many records to include and where in the sequence to start. The maximum page limit for each request is <code>100</code> objects. </p>
 
-<p>When a request is made to one of these endpoints the response will includes a <code>next_cursor</code> field. When this cursor is passed to the <code>cursor</code> field in the next request it returns the next page. When all of the records have been traversed, the api will return <code>-1</code> for the next cursor. If this is passed back into the next request, the API will start from the beginning. </p>
-<h1 id='endpoints'>Endpoints</h1><h2 id='get-nonce'>Get Nonce</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/nonce"</span>
+<p>When a request is made to one of the paginated endpoints the response will includes a <code>next_cursor</code> field. When this cursor is passed to the <code>cursor</code> field in the next request it returns the next page. When all of the records have been traversed the api will return <code>-1</code> for the next cursor. If this is passed back into the next request the API will start from the beginning. </p>
+<h1 id='endpoints'>Endpoints</h1><h2 id='get-nonce'>Get Nonce</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/nonce"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'nonce'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -475,10 +475,10 @@ curl <span class="s2">"http://api.paradex.io/v2/&lt;account-access-endpoint&gt;"
 <p>Gets the current nonce associated with the API key. Used for debugging nonce-related issues.</p>
 
 <aside class="notice">
-The recommended nonce is a unix timestamp at the current moment the request is sent. 
+The recommended nonce for new requests is a unix timestamp at the current moment the request is sent. 
 </aside>
 <h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/nonce</code></p>
+<p><code>GET http://api.paradex.io/v1/nonce</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns'>Returns</h3>
@@ -487,10 +487,10 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   'nonce': your-nonce
 }
 </pre>
-<h2 id='get-order-expiration-times'>Get Order Expiration Times</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/expirations"</span>
+<h2 id='get-order-expiration-times'>Get Order Expiration Times</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/expirations"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'expirations'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -502,7 +502,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 
 <p>Gets the order expiration times min and max.</p>
 <h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/expirations</code> </p>
+<p><code>GET http://api.paradex.io/v1/expirations</code> </p>
 <h3 id='query-parameters-2'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns-2'>Returns</h3>
@@ -512,10 +512,10 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   'maxExpirationMinutes': max-expiration
 }
 </pre>
-<h2 id='get-tokens'>Get Tokens</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/tokens"</span>
+<h2 id='get-tokens'>Get Tokens</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/tokens"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'tokens'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -525,9 +525,9 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 </code></pre>
 <p><b>Access Level:</b> Basic Access</p>
 
-<p>Get all of the tokens listed on paradex. Returns a list of objects with the name symbol and address of each token</p>
+<p>Get all of the tokens listed on paradex. Returns a list of objects with the name, symbol, and address of each token</p>
 <h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/tokens</code> </p>
+<p><code>GET http://api.paradex.io/v1/tokens</code> </p>
 <h3 id='query-parameters-3'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns-3'>Returns</h3>
@@ -541,10 +541,10 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   ...
 ]
 </pre>
-<h2 id='get-markets'>Get Markets</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/markets"</span>
+<h2 id='get-markets'>Get Markets</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/markets"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'markets'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
@@ -554,9 +554,9 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 </code></pre>
 <p><b>Access Level:</b> Basic Access</p>
 
-<p>Get all of the markets listed on paradex. Returns a list of markets and their key parameters.</p>
+<p>Get all of the markets listed on Paradex. Returns a list of markets and their key parameters.</p>
 <h3 id='http-request-4'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/markets</code> </p>
+<p><code>GET http://api.paradex.io/v1/markets</code> </p>
 <h3 id='query-parameters-4'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns-4'>Returns</h3>
@@ -575,20 +575,20 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   ...
 ]
 </pre>
-<h2 id='get-ohlcv'>Get OHLCV</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/ohlcv?market=weth-zrx&amp;period=1d&amp;amount=100"</span>
+<h2 id='get-ohlcv'>Get OHLCV</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/ohlcv?market=weth-zrx&amp;period=1d&amp;amount=100"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'ohlcv'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'weth-zrx'</span><span class="p">,</span>
-      <span class="s1">'period'</span><span class="p">:</span> <span class="s1">'1d'</span><span class="p">,</span>
-      <span class="s1">'amount'</span><span class="p">:</span> <span class="mi">100</span>
-    <span class="p">]</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'weth-zrx'</span><span class="p">,</span>
+    <span class="s1">'period'</span><span class="p">:</span> <span class="s1">'1d'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="mi">100</span>
+  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
@@ -596,7 +596,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 
 <p>Get open, high, low, close, and volume data for a market. </p>
 <h3 id='http-request-5'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/ohlcv</code> </p>
+<p><code>GET http://api.paradex.io/v1/ohlcv</code> </p>
 <h3 id='query-parameters-5'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -637,25 +637,25 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   ...
 ]
 </pre>
-<h2 id='get-ticker-snapshot'>Get Ticker Snapshot</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/ticker?market=weth-zrx"</span>
+<h2 id='get-ticker-snapshot'>Get Ticker Snapshot</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/ticker?market=weth-zrx"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'ticker'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'weth-zrx'</span><span class="p">,</span>
-    <span class="p">]</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'weth-zrx'</span><span class="p">,</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Basic Access</p>
 
 <p>Gets a ticker snapshot of the specified market </p>
 <h3 id='http-request-6'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/ticker</code> </p>
+<p><code>GET http://api.paradex.io/v1/ticker</code> </p>
 <h3 id='query-parameters-6'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -678,26 +678,26 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   'last': '0.0045'
 }
 </pre>
-<h2 id='view-orderbook'>View Orderbook</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/orderbook?market=rep-weth"</span>
+<h2 id='view-orderbook'>View Orderbook</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/orderbook?market=rep-weth"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'orderbook'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'rep-weth'</span><span class="p">,</span>
-    <span class="p">]</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'rep-weth'</span><span class="p">,</span>
+  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Basic Access</p>
 
-<p>Gets a snapshot of the order book of the given market</p>
+<p>Gets a snapshot of the orderbook of the given market</p>
 <h3 id='http-request-7'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/orderbook</code> </p>
+<p><code>GET http://api.paradex.io/v1/orderbook</code> </p>
 <h3 id='query-parameters-7'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -731,26 +731,29 @@ The recommended nonce is a unix timestamp at the current moment the request is s
     ]
 }
 </pre>
-<h2 id='trade-history'>Trade History</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/trade_history?market=rep-weth"</span>
+<h2 id='trade-history'>Trade History</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/trade_history?market=rep-weth"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'trade_history'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span><span class="p">,</span>
-    <span class="p">]</span>
-
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span><span class="p">,</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Basic Access</p>
 
 <p>Get the trade history of a market</p>
+
+<aside class="notice">
+This endpoint is paginated.
+</aside>
 <h3 id='http-request-8'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/trade_history</code> </p>
+<p><code>GET http://api.paradex.io/v1/trade_history</code> </p>
 <h3 id='query-parameters-8'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -792,31 +795,35 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 }
 
 </pre>
-<h2 id='list-orders'>List Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/orders"</span>
+<h2 id='list-orders'>List Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/orders"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'orders'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'rep-weth'</span><span class="p">,</span>
-      <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
-    <span class="p">]</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'rep-weth'</span><span class="p">,</span>
+    <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
+  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
 <p>List orders for your account based on market and order state</p>
+
+<aside class="notice">
+This endpoint is paginated.
+</aside>
 <h3 id='http-request-9'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/orders</code> </p>
+<p><code>GET http://api.paradex.io/v1/orders</code> </p>
 <h3 id='query-parameters-9'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -857,23 +864,23 @@ The recommended nonce is a unix timestamp at the current moment the request is s
     ...
 ]
 </pre>
-<h2 id='get-order-by-id'>Get Order by ID</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/get_order/&lt;order-id&gt;"</span>
+<h2 id='get-order-by-id'>Get Order by ID</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/get_order/&lt;order-id&gt;"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_order/&lt;order_id&gt;'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-    <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span>
-      <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
-    <span class="p">]</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span>
+    <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
+  <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
@@ -881,7 +888,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 
 <p>Get an order by its ID. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-10'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/get_order</code> </p>
+<p><code>GET http://api.paradex.io/v1/get_order</code> </p>
 <h3 id='query-parameters-10'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -922,27 +929,26 @@ The recommended nonce is a unix timestamp at the current moment the request is s
     ...
 ]
 </pre>
-<h2 id='list-order-trades'>List Order Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/get_order/&lt;order-id&gt;/trades"</span>
+<h2 id='list-order-trades'>List Order Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/get_order/&lt;order-id&gt;/trades"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_order/&lt;order_id&gt;/trades'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
-  <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[]</span>
+  <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
 <p>List all of the trades associated with a given order. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-11'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/get_order</code> </p>
+<p><code>GET http://api.paradex.io/v1/get_order</code> </p>
 <h3 id='query-parameters-11'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns-11'>Returns</h3>
@@ -976,29 +982,33 @@ The recommended nonce is a unix timestamp at the current moment the request is s
     }
 ]
 </pre>
-<h2 id='list-my-trades'>List My Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/get_trades"</span>
+<h2 id='list-my-trades'>List My Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/get_trades"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_trades'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
     <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span>
-  <span class="p">]</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Get all of the trades associated with an API key on a given market</p>
+
+<aside class="notice">
+This endpoint is paginated.
+</aside>
 <h3 id='http-request-12'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/get_trades</code> </p>
+<p><code>GET http://api.paradex.io/v1/get_trades</code> </p>
 <h3 id='query-parameters-12'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -1046,27 +1056,26 @@ The recommended nonce is a unix timestamp at the current moment the request is s
   ...
 ]
 </pre>
-<h2 id='balances'>Balances</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/balances"</span>
+<h2 id='balances'>Balances</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/balances"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'balances'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[]</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Get all of the token balances associated with an API key</p>
 <h3 id='http-request-13'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/balances</code> </p>
+<p><code>GET http://api.paradex.io/v2/get_balances</code> </p>
 <h3 id='query-parameters-13'>Query Parameters</h3>
 <p>None</p>
 <h3 id='returns-13'>Returns</h3>
@@ -1077,38 +1086,39 @@ The recommended nonce is a unix timestamp at the current moment the request is s
         name: 'REP'
         symbol: 'REP'
         balance: '1234'
+        available_balance: '1234'
         allowance: '1201'
     }
     ...
 ]
 </pre>
-<h2 id='get-order-parameters'>Get Order Parameters</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/order_params"</span>
+<h2 id='get-order-parameters'>Get Order Parameters</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/order_params"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'order_params'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
     <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span><span class="p">,</span>
     <span class="s1">'orderType'</span><span class="p">:</span> <span class="s1">'buy'</span><span class="p">,</span>
     <span class="s1">'price'</span><span class="p">:</span> <span class="mf">0.1</span>
     <span class="s1">'amount'</span><span class="p">:</span> <span class="mi">10</span>
     <span class="s1">'expirationDate'</span><span class="p">:</span> <span class="s1">'2017-11-14T23:15:18Z'</span>
-  <span class="p">]</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
-<p>Get parameters for a zrx order to be signed</p>
+<p>Get parameters for a 0x order to be signed</p>
 <h3 id='http-request-14'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/order_params</code> </p>
+<p><code>GET http://api.paradex.io/v1/order_params</code> </p>
 <h3 id='query-parameters-14'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -1170,29 +1180,29 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 }
 
 </pre>
-<h2 id='place-an-order'>Place an Order</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/order"</span>
+<h2 id='place-an-order'>Place an Order</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/order"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'order'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
     <span class="s1">'order'</span><span class="p">:</span> <span class="p">{</span> <span class="nx">signed</span> <span class="nx">zrx</span> <span class="nx">order</span> <span class="p">}</span>
-  <span class="p">]</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Submit a signed order to the orderbook</p>
 <h3 id='http-request-15'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/order</code> </p>
+<p><code>GET http://api.paradex.io/v1/order</code> </p>
 <h3 id='query-parameters-15'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -1210,37 +1220,33 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 <h3 id='returns-15'>Returns</h3>
 <pre class="center-column-code">
 {
-    'id': 1, 
-  'version': '2.0',
-    'result': {
-      'status': True,
-      'id': 23425
-    }
+  'status': True,
+  'id': 23425
 }
 </pre>
-<h2 id='cancel-orders'>Cancel Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v2/cancel_orders"</span>
+<h2 id='cancel-orders'>Cancel Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/cancel_orders"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
   -H <span class="s2">"HTTP_API_SIG: &lt;payload-signature&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'2.0'</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
     <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'cancel_orders'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">[</span>
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
     <span class="s1">'all'</span><span class="p">:</span> <span class="kc">true</span>
-  <span class="p">]</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
-<p>Cancel either all orders, orders based on market, or by id</p>
+<p>Cancel either all orders, orders based on market, or by order id</p>
 <h3 id='http-request-16'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v2/cancel_orders</code> </p>
+<p><code>GET http://api.paradex.io/v1/cancel_orders</code> </p>
 <h3 id='query-parameters-16'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -1267,10 +1273,8 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 </tbody></table>
 <h3 id='returns-16'>Returns</h3>
 <pre class="center-column-code">
-{
-    'id': 1, 
-  'version': '2.0',
-    'result': { 'cancelled': [1,2...] }
+{ 
+  'cancelled': [1,2...] 
 }
 </pre>
 <h1 id='feeds'>Feeds</h1>
@@ -1293,7 +1297,7 @@ The recommended nonce is a unix timestamp at the current moment the request is s
 All feeds time out after 24 hours. If you need to keep the connection open longer, please send a second subscription message.
 </aside>
 
-<p>After subscribing to a feed, a message will be returned with the same message id either confirming or listing errors creating the subscription. When subscribing to multiple feeds some subscriptions might be created successfully while others might fail in the same request. It&#39;s important for clients to handle this behavior accordingly.</p>
+<p>After subscribing to a feed, a message will be returned with the same message id either confirming the subscription or listing errors creating the subscription. When subscribing to multiple feeds some subscriptions might be created successfully while others might fail in the same request. It&#39;s important for clients to handle this behavior accordingly.</p>
 <h3 id='unsubscribing'>Unsubscribing</h3><pre class="highlight javascript tab-javascript"><code><span class="c1">// Unsubscribe</span>
 <span class="p">{</span>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"unsubscribe"</span><span class="p">,</span>
@@ -1320,7 +1324,7 @@ All feeds time out after 24 hours. If you need to keep the connection open longe
     <span class="s2">"messageId"</span><span class="p">:</span> <span class="mi">123</span>
 <span class="p">}</span>
 </code></pre>
-<p>Along with subscribe and unsubscribe, we also include a function to list subscriptions. This will return all subscriptions going to the current client making it simple to manage all active subscriptions. This endpoint returns the target key and description for each of the subsciptions. This result is first sorted by the key and then by the description. They type of message being returned is <code>subscription_result</code>. </p>
+<p>Along with subscribe and unsubscribe, we also include a function to list subscriptions. This will return all subscriptions going to the current client making it simple to manage all active subscriptions. This endpoint returns the target key and description for each of the subsciptions. This result is first sorted by the key and then by the description. The type of message being returned is <code>subscription_result</code>. </p>
 <h2 id='avaliable-feeds'>Avaliable Feeds</h2><h3 id='ticker'>Ticker</h3><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"subscribe"</span><span class="p">,</span>
     <span class="s2">"target"</span><span class="p">:</span> <span class="s2">"ticker"</span><span class="p">,</span>
@@ -1510,39 +1514,47 @@ All feeds time out after 24 hours. If you need to keep the connection open longe
 <td>Account Authorization Required</td>
 </tr>
 <tr>
-<td>118</td>
+<td>116</td>
+<td>Private Key Auth Required</td>
+</tr>
+<tr>
+<td>117</td>
+<td>Resource Not Found</td>
+</tr>
+<tr>
+<td>1000</td>
 <td>Payload Missing Field</td>
 </tr>
 <tr>
-<td>119</td>
+<td>1001</td>
 <td>Incorrect Field Format</td>
 </tr>
 <tr>
-<td>120</td>
+<td>1001</td>
 <td>Invalid Address</td>
 </tr>
 <tr>
-<td>121</td>
+<td>1003</td>
 <td>Address Not Supported</td>
 </tr>
 <tr>
-<td>122</td>
+<td>1004</td>
 <td>Value Out of Range</td>
 </tr>
 <tr>
-<td>123</td>
+<td>1005</td>
 <td>Invalid ECDSA or Hash</td>
 </tr>
 <tr>
-<td>124</td>
+<td>1006</td>
 <td>Unsupported Option</td>
 </tr>
 <tr>
-<td>125</td>
+<td>1007</td>
 <td>Address Unverified</td>
 </tr>
 <tr>
-<td>126</td>
+<td>1008</td>
 <td>Market Not Found</td>
 </tr>
 </tbody></table>

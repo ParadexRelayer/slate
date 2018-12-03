@@ -510,7 +510,7 @@ curl <span class="s2">"http://api.paradex.io/v1/&lt;account-access-endpoint&gt;"
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'nonce'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/nonce'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span> 
@@ -538,7 +538,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'expirations'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/expirations'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span>
@@ -563,7 +563,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'tokens'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/tokens'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span>
@@ -592,7 +592,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'markets'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/markets'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span>
@@ -626,7 +626,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'ohlcv'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/ohlcv'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -688,7 +688,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'ticker'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/ticker'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
@@ -729,7 +729,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'orderbook'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/orderbook'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -782,7 +782,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'trade_history'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/trade_history'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -849,7 +849,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_orders'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/get_orders'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
@@ -918,7 +918,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_order/&lt;order_id&gt;'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/get_order/&lt;order_id&gt;'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
@@ -983,7 +983,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_order/&lt;order_id&gt;/trades'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/get_order/&lt;order_id&gt;/trades'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -1036,7 +1036,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_trades'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/get_trades'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -1110,7 +1110,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'balances'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/balances'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -1146,7 +1146,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'order_params'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/order_params'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -1234,7 +1234,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'order'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/order'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
@@ -1290,7 +1290,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'cancel_orders'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/cancel_orders'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>

@@ -228,6 +228,17 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
+            <a href="#api-urls" class="toc-h1 toc-link" data-title="API URLs">API URLs</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#mainnet" class="toc-h2 toc-link" data-title="mainnet">mainnet</a>
+                  </li>
+                  <li>
+                    <a href="#kovan" class="toc-h2 toc-link" data-title="kovan">kovan</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
               <ul class="toc-list-h2">
                   <li>
@@ -246,6 +257,15 @@
           </li>
           <li>
             <a href="#pagination" class="toc-h1 toc-link" data-title="Pagination">Pagination</a>
+          </li>
+          <li>
+            <a href="#deposits-withdrawals" class="toc-h1 toc-link" data-title="Deposits/Withdrawals">Deposits/Withdrawals</a>
+          </li>
+          <li>
+            <a href="#wrapping-eth-and-setting-allowances" class="toc-h1 toc-link" data-title="Wrapping ETH and Setting Allowances">Wrapping ETH and Setting Allowances</a>
+          </li>
+          <li>
+            <a href="#order-expiry" class="toc-h1 toc-link" data-title="Order expiry">Order expiry</a>
           </li>
           <li>
             <a href="#endpoints" class="toc-h1 toc-link" data-title="Endpoints">Endpoints</a>
@@ -344,6 +364,18 @@
 <p>Welcome to the Paradex API! The Paradex API is a powerful toolset used to interact with Paradex over HTTP or websocket. </p>
 
 <p>It allows you to submit trades, view orders, view the orderbook for different markets and more. It&#39;s an ideal tool for automatically trading tokens directly from your wallet, making it easy for both beginners and experts alike to get started algorithmically trading tokens.</p>
+<h1 id='api-urls'>API URLs</h1><h3 id='mainnet'>mainnet</h3>
+<p>For mainnet, use the following base url:</p>
+
+<p>https://api.paradex.io/consumer</p>
+
+<p>You can request an API key at <code>https://paradex.io/developers</code></p>
+<h3 id='kovan'>kovan</h3>
+<p>For kovan, use:</p>
+
+<p>https://kovan-api.paradex.io/consumer</p>
+
+<p>You can request an API key at <code>https://kovan.paradex.io/developers</code></p>
 <h1 id='authentication'>Authentication</h1>
 <p>The Paradex API has four levels of authentication: public access, basic access, account access, and private key access. Most of the time you will be working with basic and account access as these protect most of the endpoints. Private key access is used only to generate secrets (more below) and public access is only applied to the ticker endpoint to be used as a public feed.</p>
 <h3 id='basic-access'>Basic Access</h3><pre class="highlight shell tab-shell"><code><span class="c"># Make a request with your api key</span>
@@ -459,6 +491,18 @@ curl <span class="s2">"http://api.paradex.io/v1/&lt;account-access-endpoint&gt;"
 <p>Each time a request is made to a pagination endpoint, an optional <code>per_page</code> and <code>cursor</code> can be included. This specifies how many records to include and where in the sequence to start. The maximum page limit for each request is <code>100</code> objects. </p>
 
 <p>When a request is made to one of the paginated endpoints the response will includes a <code>next_cursor</code> field. When this cursor is passed to the <code>cursor</code> field in the next request it returns the next page. When all of the records have been traversed the api will return <code>-1</code> for the next cursor. If this is passed back into the next request the API will start from the beginning. </p>
+<h1 id='deposits-withdrawals'>Deposits/Withdrawals</h1>
+<p>Paradex is a non-custodial platform. This means you retain complete control of your funds and they stay in your own wallet until a trade takes place. As such, there is no way to deposit or withdraw funds to or from Paradex. Assets can be moved in and out of your wallet either programmatically or via an application. You will need to wrap Ether and set allowances for tokens you want to offer.</p>
+<h1 id='wrapping-eth-and-setting-allowances'>Wrapping ETH and Setting Allowances</h1>
+<p>The ERC20 standard was created to provide a common interface for tokens. Ether is not currently an ERC20 token and has to be converted to an ERC20 compatible token called Wrapped-ETH (WETH). This conversion process is called wrapping, with 1 WETH being equivalent to 1 ETH.</p>
+
+<p>Another feature of ERC20 tokens is allowances. Allowances allow you to control how much of your funds can be transferred out of your wallet by the 0x contracts used by Paradex. By default your allowances are set to 0, so before you begin trading you&#39;ll need to set allowances for your tokens. Even once you have set your allowances set, no funds can be transferred out of your account without you putting a valid order on the orderbook. If you try and place an order to Paradex without setting an allowance for that token, your order will be in an unfunded state. If you want to set allowances programmatically, the 0x.js library provides some convenience methods to help you do that: https://www.0xproject.com/docs/0xjs#token</p>
+<h1 id='order-expiry'>Order expiry</h1>
+<p>All orders must have a valid expiration date. Min and max expiration times may change based on a number of factors like transaction backlogs and network conditions. You can look up the min and max expiration times by calling the <code>/v0/expirations</code> endpoint.</p>
+
+<p>The expiration date is the date that the order remains valid to be processed by the 0x contracts on the blockchain. To allow for enough time between trade broadcast and settlement on ethereum, an order will only remain valid on the Paradex orderbook if it has at least <code>minExpirationMinutes</code> minutes until its expiration. Therefore if you want an order to appear on the orderbook for 1 minute, you would set the expirationDate to be now() + minExpirationMinutes + 1 minute. Our goal is to eliminate settlement failures where an order reaches its expiration time while sitting in the pending tx pool waiting to be mined.</p>
+
+<p>You are of course free te set your expirations further in the future and cancel the order for free at any time. Specific details about your order&#39;s TTL will be returned to you in the fee object that is returned to you with <code>v0/orderParams</code>.</p>
 <h1 id='endpoints'>Endpoints</h1><h2 id='get-nonce'>Get Nonce</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/nonce"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>

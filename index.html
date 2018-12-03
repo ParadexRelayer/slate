@@ -795,7 +795,7 @@ This endpoint is paginated.
 }
 
 </pre>
-<h2 id='list-orders'>List Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/orders"</span>
+<h2 id='list-orders'>List Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/v1/get_orders"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"HTTP_API_KEY: &lt;your-api-key&gt;"</span>
@@ -803,7 +803,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'orders'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'get_orders'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
@@ -823,7 +823,7 @@ This endpoint is paginated.
 This endpoint is paginated.
 </aside>
 <h3 id='http-request-9'>HTTP Request</h3>
-<p><code>GET http://api.paradex.io/v1/orders</code> </p>
+<p><code>GET http://api.paradex.io/v1/get_orders</code> </p>
 <h3 id='query-parameters-9'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -1194,13 +1194,15 @@ This endpoint is paginated.
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
   <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s1">'order'</span><span class="p">:</span> <span class="p">{</span> <span class="nx">signed</span> <span class="nx">zrx</span> <span class="nx">order</span> <span class="p">}</span>
+    <span class="p">...</span><span class="nx">zrx</span><span class="o">-</span><span class="nx">order</span><span class="o">-</span><span class="nx">params</span><span class="p">,</span> 
+    <span class="s1">'signature'</span><span class="p">:</span> <span class="s1">'0x.....'</span>
+    <span class="s1">'feeId'</span><span class="p">:</span> <span class="mi">1</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
 
-<p>Submit a signed order to the orderbook</p>
+<p>Submit a signed order to the orderbook. </p>
 <h3 id='http-request-15'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/v1/order</code> </p>
 <h3 id='query-parameters-15'>Query Parameters</h3>
@@ -1212,9 +1214,19 @@ This endpoint is paginated.
 </tr>
 </thead><tbody>
 <tr>
-<td>order</td>
+<td>order-params</td>
 <td>signed zrx order</td>
-<td>signed order to place on the orderbook</td>
+<td>all <a href="https://developers.paradex.io/#get-order-parameters">order params</a></td>
+</tr>
+<tr>
+<td>signature</td>
+<td>hex</td>
+<td>signature produced by signing the order params</td>
+</tr>
+<tr>
+<td>feeId</td>
+<td>int</td>
+<td>feeId returned by the order params endpoint</td>
 </tr>
 </tbody></table>
 <h3 id='returns-15'>Returns</h3>

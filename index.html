@@ -295,6 +295,9 @@
                     <a href="#trade-history" class="toc-h2 toc-link" data-title="Trade History">Trade History</a>
                   </li>
                   <li>
+                    <a href="#generate-secret" class="toc-h2 toc-link" data-title="Generate Secret">Generate Secret</a>
+                  </li>
+                  <li>
                     <a href="#list-orders" class="toc-h2 toc-link" data-title="List Orders">List Orders</a>
                   </li>
                   <li>
@@ -386,7 +389,7 @@ curl <span class="s2">"http://api.paradex.io/api/v1/nonce"</span>
 </code></pre>
 <p>Basic access is used to protect any non-account endpoint. To query these endpoints you must include the <code>API-KEY</code> header on your request that includes an API key generated for your account. Information about generating API keys can be found on our <a href="https://paradex.io/developers">API key page</a>. </p>
 <h3 id='account-access'>Account Access</h3><pre class="highlight shell tab-shell"><code><span class="c"># First get a secret from the get_secret endpoint</span>
-curl <span class="s2">"http://api.paradex.io/api/v1/get_secret"</span>
+curl <span class="s2">"http://api.paradex.io/api/v1/generate_secret"</span>
  --data <span class="s2">"nonce=&lt;valid-nonce&gt;"</span>
  -H <span class="s2">"API-KEY: &lt;your-api-key&gt;"</span>
  -H <span class="s2">"API-SIG: &lt;payload-signature&gt;"</span>
@@ -841,6 +844,51 @@ This endpoint is paginated.
 }
 
 </pre>
+<h2 id='generate-secret'>Generate Secret</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/api/v1/generate_secret"</span>
+  -X POST
+  -H <span class="s2">"Content-Type: application/json"</span>
+  -H <span class="s2">"API-KEY: &lt;your-api-key&gt;"</span>
+  -H <span class="s2">"API-SIG: &lt;private-key-payload-signature&gt;"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/generate_secret'</span><span class="p">,</span> 
+    <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
+  <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
+  <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;private-key-payload-signature&gt;'</span><span class="p">,</span>
+    <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
+  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'rep-weth'</span><span class="p">,</span>
+    <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<p><b>Access Level:</b> Private Key Access</p>
+
+<p>Generate a new secret for your account. This endpoint can be called as many times as you want. Every new secret generated will invalidate the old secret associated with the API key. We store the public key associated with the secret generated and use it to verify signatures. </p>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>GET http://api.paradex.io/api/v1/generate_secret</code> </p>
+<h3 id='query-parameters-9'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
+</tbody></table>
+<h3 id='returns-9'>Returns</h3>
+<pre class="center-column-code">
+{
+  'secret': 'aedf12432...'
+}
+</pre>
 <h2 id='list-orders'>List Orders</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/api/v1/get_orders"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
@@ -868,9 +916,9 @@ This endpoint is paginated.
 <aside class="notice">
 This endpoint is paginated.
 </aside>
-<h3 id='http-request-9'>HTTP Request</h3>
+<h3 id='http-request-10'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_orders</code> </p>
-<h3 id='query-parameters-9'>Query Parameters</h3>
+<h3 id='query-parameters-10'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -878,6 +926,11 @@ This endpoint is paginated.
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
 <tr>
 <td>market</td>
 <td>string</td>
@@ -889,7 +942,7 @@ This endpoint is paginated.
 <td>order state</td>
 </tr>
 </tbody></table>
-<h3 id='returns-9'>Returns</h3>
+<h3 id='returns-10'>Returns</h3>
 <pre class="center-column-code">
 [
     {
@@ -933,9 +986,9 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Get an order by its ID. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
-<h3 id='http-request-10'>HTTP Request</h3>
+<h3 id='http-request-11'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_order</code> </p>
-<h3 id='query-parameters-10'>Query Parameters</h3>
+<h3 id='query-parameters-11'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -943,6 +996,11 @@ This endpoint is paginated.
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
 <tr>
 <td>market</td>
 <td>string</td>
@@ -954,7 +1012,7 @@ This endpoint is paginated.
 <td>order state</td>
 </tr>
 </tbody></table>
-<h3 id='returns-10'>Returns</h3>
+<h3 id='returns-11'>Returns</h3>
 <pre class="center-column-code">
 [
     {
@@ -993,11 +1051,23 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>List all of the trades associated with a given order. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
-<h3 id='http-request-11'>HTTP Request</h3>
+<h3 id='http-request-12'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_order</code> </p>
-<h3 id='query-parameters-11'>Query Parameters</h3>
-<p>None</p>
-<h3 id='returns-11'>Returns</h3>
+<h3 id='query-parameters-12'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
+</tbody></table>
+<h3 id='returns-12'>Returns</h3>
 <pre class="center-column-code">
 [
     {
@@ -1053,9 +1123,9 @@ This endpoint is paginated.
 <aside class="notice">
 This endpoint is paginated.
 </aside>
-<h3 id='http-request-12'>HTTP Request</h3>
+<h3 id='http-request-13'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_trades</code> </p>
-<h3 id='query-parameters-12'>Query Parameters</h3>
+<h3 id='query-parameters-13'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1064,12 +1134,17 @@ This endpoint is paginated.
 </tr>
 </thead><tbody>
 <tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
+<tr>
 <td>market</td>
 <td>string</td>
 <td>symbol of the market</td>
 </tr>
 </tbody></table>
-<h3 id='returns-12'>Returns</h3>
+<h3 id='returns-13'>Returns</h3>
 <pre class="center-column-code">
 [
   {
@@ -1120,11 +1195,23 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Get all of the token balances associated with an API key</p>
-<h3 id='http-request-13'>HTTP Request</h3>
+<h3 id='http-request-14'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/v2/get_balances</code> </p>
-<h3 id='query-parameters-13'>Query Parameters</h3>
-<p>None</p>
-<h3 id='returns-13'>Returns</h3>
+<h3 id='query-parameters-14'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
+</tbody></table>
+<h3 id='returns-14'>Returns</h3>
 <pre class="center-column-code">
 [
     {
@@ -1163,9 +1250,9 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Get parameters for a 0x order to be signed</p>
-<h3 id='http-request-14'>HTTP Request</h3>
+<h3 id='http-request-15'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/order_params</code> </p>
-<h3 id='query-parameters-14'>Query Parameters</h3>
+<h3 id='query-parameters-15'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1173,6 +1260,11 @@ This endpoint is paginated.
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
 <tr>
 <td>market</td>
 <td>string</td>
@@ -1199,7 +1291,7 @@ This endpoint is paginated.
 <td>expiration date and time of order</td>
 </tr>
 </tbody></table>
-<h3 id='returns-14'>Returns</h3>
+<h3 id='returns-15'>Returns</h3>
 <pre class="center-column-code">
 {
   fee: { 
@@ -1249,9 +1341,9 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Submit a signed order to the orderbook. </p>
-<h3 id='http-request-15'>HTTP Request</h3>
+<h3 id='http-request-16'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/order</code> </p>
-<h3 id='query-parameters-15'>Query Parameters</h3>
+<h3 id='query-parameters-16'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1259,6 +1351,11 @@ This endpoint is paginated.
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
 <tr>
 <td>order-params</td>
 <td>signed zrx order</td>
@@ -1275,7 +1372,7 @@ This endpoint is paginated.
 <td>feeId returned by the order params endpoint</td>
 </tr>
 </tbody></table>
-<h3 id='returns-15'>Returns</h3>
+<h3 id='returns-16'>Returns</h3>
 <pre class="center-column-code">
 {
   'status': True,
@@ -1303,9 +1400,9 @@ This endpoint is paginated.
 <p><b>Access Level:</b> Account Access</p>
 
 <p>Cancel either all orders, orders based on market, or by order id</p>
-<h3 id='http-request-16'>HTTP Request</h3>
+<h3 id='http-request-17'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/cancel_orders</code> </p>
-<h3 id='query-parameters-16'>Query Parameters</h3>
+<h3 id='query-parameters-17'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1313,6 +1410,11 @@ This endpoint is paginated.
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>nonce</td>
+<td>int</td>
+<td>valid nonce for the api key</td>
+</tr>
 <tr>
 <td>all</td>
 <td>boolean (optional)</td>
@@ -1329,7 +1431,7 @@ This endpoint is paginated.
 <td>order ids to cancel</td>
 </tr>
 </tbody></table>
-<h3 id='returns-16'>Returns</h3>
+<h3 id='returns-17'>Returns</h3>
 <pre class="center-column-code">
 { 
   'cancelled': [1,2...] 

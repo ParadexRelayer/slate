@@ -975,12 +975,7 @@ This endpoint is paginated.
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>
   <span class="s1">'sig'</span><span class="p">:</span> <span class="s1">'&lt;payload-signature&gt;'</span><span class="p">,</span>
-    <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-  <span class="s1">'params'</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'REP-WETH'</span>
-    <span class="s1">'state'</span><span class="p">:</span> <span class="s1">'all'</span>
-  <span class="p">}</span>
-
+    <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">}</span>
 </code></pre>
 <p><b>Access Level:</b> Account Access</p>
@@ -1001,37 +996,24 @@ This endpoint is paginated.
 <td>int</td>
 <td>valid nonce for the api key</td>
 </tr>
-<tr>
-<td>market</td>
-<td>string</td>
-<td>symbol of the market</td>
-</tr>
-<tr>
-<td>state</td>
-<td>&#39;all&#39; &#39;unknown&#39; &#39;open&#39; &#39;expired&#39; &#39;filled&#39; &#39;unfunded&#39; &#39;cancelled&#39;</td>
-<td>order state</td>
-</tr>
 </tbody></table>
 <h3 id='returns-11'>Returns</h3>
 <pre class="center-column-code">
-[
-    {
-        orderParams: {
-            ...
-        },
-        id: 3423,
-        price: '0.078',
-        amount: '100',
-        type: 'buy'|'sell',
-        market: 'REP-WETH',
-        orderHash: 'b41664ebbb46b42fbf32fdce8be3c8df66f354a93dd272e62421e4573a8945d8',
-        state: 'unknown'|'open'|'expired'|'filled'|'unfunded'|'cancelled',
-        amountRemaining: '75',
-        closedAt: None,
-        expiresAt: '2017-11-01T21:24:20Z'
+{
+    orderParams: {
+        ...
     },
-    ...
-]
+    id: 3423,
+    price: '0.078',
+    amount: '100',
+    type: 'buy'|'sell',
+    market: 'REP-WETH',
+    orderHash: 'b41664ebbb46b42fbf32fdce8be3c8df66f354a93dd272e62421e4573a8945d8',
+    state: 'unknown'|'open'|'expired'|'filled'|'unfunded'|'cancelled',
+    amountRemaining: '75',
+    closedAt: None,
+    expiresAt: '2017-11-01T21:24:20Z'
+}
 </pre>
 <h2 id='list-order-trades'>List Order Trades</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/api/v1/get_order/&lt;order-id&gt;/trades"</span>
   -X POST

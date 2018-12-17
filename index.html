@@ -1159,7 +1159,7 @@ This endpoint is paginated.
   ...
 ]
 </pre>
-<h2 id='balances'>Balances</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/api/v1/balances"</span>
+<h2 id='balances'>Balances</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.paradex.io/api/v1/get_balances"</span>
   -X POST
   -H <span class="s2">"Content-Type: application/json"</span>
   -H <span class="s2">"API-KEY: &lt;your-api-key&gt;"</span>
@@ -1167,7 +1167,7 @@ This endpoint is paginated.
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s1">'version'</span><span class="p">:</span> <span class="s1">'1.0'</span>
     <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'request'</span><span class="p">,</span> 
-    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/balances'</span><span class="p">,</span> 
+    <span class="s1">'target'</span><span class="p">:</span> <span class="s1">'/api/v1/get_balances'</span><span class="p">,</span> 
     <span class="s1">'method'</span><span class="p">:</span> <span class="s1">'POST'</span><span class="p">,</span> 
     <span class="s1">'id'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s1">'api_key'</span><span class="p">:</span> <span class="s1">'&lt;your-api-key&gt;'</span><span class="p">,</span>

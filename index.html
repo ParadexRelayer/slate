@@ -411,7 +411,9 @@ curl <span class="s2">"http://api.paradex.io/api/v1/&lt;account-access-endpoint&
 </code></pre>
 <p>Once you have your secret key you can use it to authorize requests to account access endpoints. This is done by hashing the packed payload and signing it, including that signature in the <code>API-SIG</code> header. These signatures are the same as ethereum personal signatures in web3.</p>
 <h3 id='private-key-access'>Private Key Access</h3>
-<p>The only difference between the regular access levels and private key access is that you need to sign the payload with the Ethereum private key corresponding to the public key provided when you generated your API key. This signature should be included in the same <code>API-SIG</code> header . The only private key endpoint is <code>generate_secret</code>. After you have your secret, you can use it to access any of the account access endpoints. </p>
+<p>The only difference between the regular access levels and private key access is that you need to sign the payload with the Ethereum private key corresponding to the public key provided when you generated your API key. This signature should be included in the same <code>API-SIG</code> header. </p>
+
+<p>The only private key endpoint is <code>generate_secret</code>. Each secret is an ethereum private key. We store the corresponding public key and use it to verify every signature and payload submitted is valid. All of the account access endpoints will accept a signed payload by this secret (see above). After you have your secret, you can use it to access any of the account access endpoints. </p>
 <h3 id='payload-signing'>Payload Signing</h3><pre class="highlight javascript tab-javascript"><code>
 <span class="c1">// Example of payload signing in typescript</span>
 

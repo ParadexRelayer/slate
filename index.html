@@ -242,10 +242,16 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#public-acces" class="toc-h2 toc-link" data-title="Public Acces">Public Acces</a>
+                  </li>
+                  <li>
                     <a href="#basic-access" class="toc-h2 toc-link" data-title="Basic Access">Basic Access</a>
                   </li>
                   <li>
                     <a href="#account-access" class="toc-h2 toc-link" data-title="Account Access">Account Access</a>
+                  </li>
+                  <li>
+                    <a href="#private-key-access" class="toc-h2 toc-link" data-title="Private Key Access">Private Key Access</a>
                   </li>
                   <li>
                     <a href="#payload-signing" class="toc-h2 toc-link" data-title="Payload Signing">Payload Signing</a>
@@ -383,6 +389,8 @@
 <p>You can request an API key at <code>https://kovan.paradex.io/developers</code></p>
 <h1 id='authentication'>Authentication</h1>
 <p>The Paradex API has four levels of authentication: public access, basic access, account access, and private key access. Most of the time you will be working with basic and account access as these protect most of the endpoints. Private key access is used only to generate secrets (more below) and public access is only applied to the ticker endpoint to be used as a public feed.</p>
+<h3 id='public-acces'>Public Acces</h3>
+<p>Public access requires no access credentials. The only public access endpoint is <code>ticker</code>.</p>
 <h3 id='basic-access'>Basic Access</h3><pre class="highlight shell tab-shell"><code><span class="c"># Make a request with your api key</span>
 curl <span class="s2">"http://api.paradex.io/api/v1/nonce"</span>
   -H <span class="s2">"API-KEY: &lt;your-api-key&gt;"</span>
@@ -402,6 +410,8 @@ curl <span class="s2">"http://api.paradex.io/api/v1/&lt;account-access-endpoint&
  -H <span class="s2">"API-SIG: &lt;payload-signature-with-secret&gt;"</span>
 </code></pre>
 <p>Once you have your secret key you can use it to authorize requests to account access endpoints. This is done by hashing the packed payload and signing it, including that signature in the <code>API-SIG</code> header. These signatures are the same as ethereum personal signatures in web3.</p>
+<h3 id='private-key-access'>Private Key Access</h3>
+<p>The only difference between the regular access levels and private key access is that you need to sign the payload with the Ethereum private key corresponding to the public key provided when you generated your API key. The only private key endpoint is <code>generate_secret</code>. After you have your secret, you can use it to access any of the account access endpoints. </p>
 <h3 id='payload-signing'>Payload Signing</h3><pre class="highlight javascript tab-javascript"><code>
 <span class="c1">// Example of payload signing in typescript</span>
 
@@ -700,7 +710,7 @@ The recommended nonce for new requests is a unix timestamp at the current moment
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-<p><b>Access Level:</b> Basic Access</p>
+<p><b>Access Level:</b> Public Access</p>
 
 <p>Gets a ticker snapshot of the specified market </p>
 <h3 id='http-request-6'>HTTP Request</h3>
@@ -869,7 +879,7 @@ This endpoint is paginated.
 <p>Generate a new secret for your account. This endpoint can be called as many times as you want. Every new secret generated will invalidate the old secret associated with the API key. We store the public key associated with the secret generated and use it to verify signatures. </p>
 <h3 id='http-request-9'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/generate_secret</code> </p>
-<h3 id='query-parameters-9'>Query Parameters</h3>
+<h3 id='body-parameters'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -918,7 +928,7 @@ This endpoint is paginated.
 </aside>
 <h3 id='http-request-10'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_orders</code> </p>
-<h3 id='query-parameters-10'>Query Parameters</h3>
+<h3 id='body-parameters-2'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -983,7 +993,7 @@ This endpoint is paginated.
 <p>Get an order by its ID. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-11'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_order</code> </p>
-<h3 id='query-parameters-11'>Query Parameters</h3>
+<h3 id='body-parameters-3'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1035,7 +1045,7 @@ This endpoint is paginated.
 <p>List all of the trades associated with a given order. Note the order id must be passed in the target path rather than in the params for websocket. See example for more info.</p>
 <h3 id='http-request-12'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_order</code> </p>
-<h3 id='query-parameters-12'>Query Parameters</h3>
+<h3 id='body-parameters-4'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1107,7 +1117,7 @@ This endpoint is paginated.
 </aside>
 <h3 id='http-request-13'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/get_trades</code> </p>
-<h3 id='query-parameters-13'>Query Parameters</h3>
+<h3 id='body-parameters-5'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1179,7 +1189,7 @@ This endpoint is paginated.
 <p>Get all of the token balances associated with an API key</p>
 <h3 id='http-request-14'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/v2/get_balances</code> </p>
-<h3 id='query-parameters-14'>Query Parameters</h3>
+<h3 id='body-parameters-6'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1234,7 +1244,7 @@ This endpoint is paginated.
 <p>Get parameters for a 0x order to be signed</p>
 <h3 id='http-request-15'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/order_params</code> </p>
-<h3 id='query-parameters-15'>Query Parameters</h3>
+<h3 id='body-parameters-7'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1325,7 +1335,7 @@ This endpoint is paginated.
 <p>Submit a signed order to the orderbook. </p>
 <h3 id='http-request-16'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/order</code> </p>
-<h3 id='query-parameters-16'>Query Parameters</h3>
+<h3 id='body-parameters-8'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1384,7 +1394,7 @@ This endpoint is paginated.
 <p>Cancel either all orders, orders based on market, or by order id</p>
 <h3 id='http-request-17'>HTTP Request</h3>
 <p><code>GET http://api.paradex.io/api/v1/cancel_orders</code> </p>
-<h3 id='query-parameters-17'>Query Parameters</h3>
+<h3 id='body-parameters-9'>Body Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
